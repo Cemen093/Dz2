@@ -3,11 +3,11 @@ const currentYear = 2020;
 const rateDollarToEuro = 0.82;
 
 class Widget {
-    constructor(func) {
-        func(this.prepare())
+    constructor(func, chekTwoInput = false) {
+        func(this.prepare(chekTwoInput))
     }
 
-    prepare() {
+    prepare(chekTwoInput) {
         let core = document.createElement('DIV');
         let input = document.createElement('INPUT');
         let button = document.createElement('BUTTON');
@@ -16,31 +16,12 @@ class Widget {
         let result = document.createElement('SPAN');
         result.innerText = 'Тут будет ответ';
         core.appendChild(input);
-        core.appendChild(button);
-        core.appendChild(result);
-        core.classList.add('widget');
-        core.setAttribute('id', Date.now().toString());
-        document.body.appendChild(core);
-        return core;
-    }
-}
-class WidgetTwo {
-    constructor(func) {
-        func(this.prepare())
-    }
 
-    prepare() {
-        let core = document.createElement('DIV');
-        let input = document.createElement('INPUT');
-        let input2 = document.createElement('INPUT');
-        let button = document.createElement('BUTTON');
-        button.innerText = "Enter";
-        input.setAttribute('placeholder', 'Enter value');
-        input2.setAttribute('placeholder', 'Enter value');
-        let result = document.createElement('SPAN');
-        result.innerText = 'Тут будет ответ';
-        core.appendChild(input);
-        core.appendChild(input2);
+        if (chekTwoInput) {
+            let input2 = document.createElement('INPUT');
+            input2.setAttribute('placeholder', 'Enter value');
+            core.appendChild(input2);
+        }
         core.appendChild(button);
         core.appendChild(result);
         core.classList.add('widget');
@@ -103,33 +84,26 @@ let questions = ['Ваше имя', 'Год рождения', 'Длина ст�
 ];
 
 for (let i = 0; i < 12; i++) {
-    if (i == 4 || i == 8) {
+    let chekTwoInput = i == 4 || i == 8;
 
-        new WidgetTwo((content) => {
-            let input01 = content.querySelectorAll('input')[0];
-            let input02 = content.querySelectorAll('input')[1];
-            input01.setAttribute('placeholder', questions[i]);
+    new Widget((content) => {
+        let input01 = content.querySelector('input');
+        let input02;
+        input01.setAttribute('placeholder', questions[i]);
+        if (chekTwoInput) {
+            input02 = content.querySelectorAll('input')[1];
             input02.setAttribute('placeholder', questions[++i]);
+        }
 
-
-            content.querySelector('button').addEventListener('click', () => {
-                content.querySelector('span').innerText = getResult(i, input01.value, input02.value);
-                input01.value = '';
-                input02.value = '';
-            });
+        content.querySelector('button').addEventListener('click', () => {
+            content.querySelector('span').innerText = getResult(i, input01.value, chekTwoInput ? input02.value : false);
+            input01.value = '';
+            if (chekTwoInput) {
+                input02.value = ''
+            }
         });
+    }, chekTwoInput);
 
-    } else {
-        new Widget((content) => {
-            let input = content.querySelector('input');
-            input.setAttribute('placeholder', questions[i]);
 
-            content.querySelector('button').addEventListener('click', () => {
-                content.querySelector('span').innerText = getResult(i, input.value);
-                input.value = '';
-            });
-        });
-
-    }
 
 }

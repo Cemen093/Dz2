@@ -11,7 +11,7 @@ div.widget {
     border: 3px solid red;
 }
 
-div span {
+div.widget span {
     padding: 2px;
     padding-left: 5px;
     padding-right: 5px;
@@ -21,7 +21,7 @@ div span {
     color: whitesmoke;
 }
 
-div input {
+div.widget input {
     padding: 2px;
     padding-left: 5px;
     padding-right: 5px;
@@ -31,7 +31,7 @@ div input {
     color: blue;
 }
 
-div button {
+div.widget button {
     padding: 2px;
     padding-left: 5px;
     padding-right: 5px;
